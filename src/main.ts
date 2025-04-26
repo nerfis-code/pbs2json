@@ -1,4 +1,5 @@
 import { PokemonSpecies } from './types';
+import stringify from "json-stringify-pretty-compact";
 import fs from 'fs'
 
 const DefaultPokemonSpecies: PokemonSpecies = {
@@ -84,4 +85,4 @@ for (const line of pokemonTxt.split('\n')) {
         curr[key] = value
     }
 }
-console.log(species)
+fs.writeFileSync('json/species.json', stringify(species, { maxLength: 80 }))

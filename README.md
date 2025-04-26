@@ -2,6 +2,9 @@
 
 ### es 
 ***Una herramienta para volver los archivos pbs de pokemon essentials a json***
+#### prequerisito
+Tener node instalado
+https://nodejs.org/en
 ```cmd
 git clone https://github.com/nerfis-code/pbs2json.git
 # mover tu directorio PBS al directorio pbs2json
@@ -13,8 +16,8 @@ npm run start
 ```
 ### en 
 ***A tool to convert pbs of pokemon essentials files to json***
-
-
+####required
+Have node installed
 ```cmd
 git clone https://github.com/nerfis-code/pbs2json.git
 # move your PBS directory to the pbs2json directory

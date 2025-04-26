@@ -1,4 +1,5 @@
-export interface PokemonSpecies {
+export type PokemonSpecies = {
+    [k: string]: any,
     ID: string; // Ejemplo: 'BULBASAUR' (en mayúsculas, sin espacios o caracteres especiales)
     Name: string;
     Types: string[]; // Tuple con 1-2 tipos elementales
@@ -47,11 +48,63 @@ export interface PokemonSpecies {
     Generation?: number;
 }
 
-// BaseStats: {
-//     HP: number;
-//     Attack: number;
-//     Defense: number;
-//     Speed: number;
-//     SpecialAttack: number;
-//     SpecialDefense: number;
-// };
+export const DefaultPokemonSpecies: PokemonSpecies = {
+    ID: '',
+    Name: '',
+    Types: [],
+    BaseStats: [],
+    GenderRatio: 'Genderless',
+    GrowthRate: 'MediumFast',
+    BaseExp: 1,
+    EVs: [],
+    CatchRate: 45,
+    Happiness: 70,
+    Abilities: [],
+    HiddenAbilities: [],
+    Moves: [],
+    TutorMoves: [],
+    EggMoves: [],
+    EggGroups: [],
+    HatchSteps: 1,
+    Offspring: [],
+    Height: 0.1,
+    Weight: 0.1,
+    Color: 'Red',
+    Shape: 'Head',
+    Category: '',
+    Pokedex: '',
+    Flags: [],
+    Evolutions: [],
+    Incense: '',
+    Habitat: '',
+    Generation: 1,
+    FormName: '',
+};
+
+export type Move = {
+    Name: string;
+    Type: string; // puedes ajustar los tipos válidos
+    Category: string;
+    Power: number;
+    Accuracy: number;
+    TotalPP: number;
+    Target: string;
+    FunctionCode: string;
+    Flags: string[]; // lista de banderas
+    EffectChance: number;
+    Description: string;
+};
+
+export const DefaultMove: Move = {
+    Name: "DEFAULT",
+    Type: "BUG",
+    Category: "Special",
+    Power: 0,
+    Accuracy: 0,
+    TotalPP: 0,
+    Target: "NearOther",
+    FunctionCode: "ANYCODE",
+    Flags: [],
+    EffectChance: 10,
+    Description: "DEFAULT"
+};

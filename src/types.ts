@@ -108,3 +108,42 @@ export const DefaultMove: Move = {
     EffectChance: 10,
     Description: "DEFAULT"
 };
+
+type Item = {
+    ID: string;
+    Name: string;
+    NamePlural: string;
+    PortionName?: string;
+    PortionNamePlural?: string;
+    Pocket: number;
+    Price: number;
+    SellPrice?: number;
+    BPPrice: number;
+    FieldUse?: "OnPokemon" | "Direct" | "TR" | "TM" | "HM" | "";
+    BattleUse?: "OnPokemon" | "OnMove" | "OnBattler" | "OnFoe" | "Direct" | "";
+    Flags?: string[];
+    Consumable?: boolean;
+    ShowQuantity?: boolean;
+    Move?: string;
+    Description: string;
+};
+
+export const DefaultItem: Item = {
+    ID: "UNNAMED",
+    Name: "Unnamed",
+    NamePlural: "",
+    PortionName: '',
+    PortionNamePlural: '',
+    Pocket: 1,
+    Price: 0,
+    SellPrice: 0,
+    BPPrice: 1,
+    FieldUse: "",
+    BattleUse: "",
+    Flags: [],
+    Consumable: false,
+    ShowQuantity: false,
+    Move: '',
+    Description: "???"
+};
+

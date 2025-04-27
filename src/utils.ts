@@ -1,4 +1,4 @@
-import { DefaultMove, DefaultPokemonSpecies } from './types';
+import { DefaultItem, DefaultMove, DefaultPokemonSpecies } from './types';
 import stringify from "json-stringify-pretty-compact";
 import fs from 'fs'
 
@@ -13,10 +13,13 @@ export function parse2Json(pbsName: string): void {
     let _default: any = null
     switch (pbsName) {
         case 'pokemon':
-            _default = DefaultPokemonSpecies
+            _default = DefaultPokemonSpecies // national pokedex
             break
         case 'moves':
             _default = DefaultMove
+            break
+        case 'items':
+            _default = DefaultItem
             break
         default:
             break
@@ -26,6 +29,7 @@ export function parse2Json(pbsName: string): void {
     for (const line of pbs.split('\n')) {
         if (line.startsWith('#')) continue
         if (line.startsWith('[')) {
+            validatePBSObj(curr, pbsName)
             curr = structuredClone(_default)
             const key = Object.keys(_default)[0]
             curr[key] = line.replace('[', '').replace(']', '')
@@ -44,7 +48,26 @@ export function parse2Json(pbsName: string): void {
             curr[key] = valueWithFormat
         }
     }
+    validatePBSObj(curr, pbsName)
     fs.writeFileSync(`json/${pbsName}.json`, stringify(res, { maxLength: 80 }))
+}
+
+function validatePBSObj(obj: any, pbsName: string) {
+    if (obj == null) return null
+    switch (pbsName) {
+        case 'pokemon':
+            break
+        case 'moves':
+            break
+        case 'items':
+            obj["SellPrice"] = obj["Price"]
+            if (obj["SellPrice"] == 0) {
+            }
+            break
+        default:
+            break
+    }
+    return obj
 }
 
 const pbsParse = (value: string): string | number | Array<number | String> => {
@@ -59,4 +82,20 @@ const pbsParse = (value: string): string | number | Array<number | String> => {
     return ttoN(value)
 }
 
-
+export function parseRegionalDexes() {
+    const pbs = fs.readFileSync(`PBS/regional_dexes.txt`, { encoding: 'utf-8' })
+    const res: { [k: number]: Array<string> } = {}
+    let pokedex = 0
+    for (let line of pbs.split('\n')) {
+        line = line.trim()
+        if (line.startsWith('#') || line.startsWith(' #')) continue
+        if (line.startsWith('[')) {
+            pokedex = parseInt(line.replace('[', '').replace(']', ''))
+            res[pokedex] = []
+            continue
+        }
+        const value = line
+        res[pokedex].push(value)
+    }
+    fs.writeFileSync(`json/regional_dexes.json`, stringify(res, { maxLength: 80 }))
+}

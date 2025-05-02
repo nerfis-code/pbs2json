@@ -49,7 +49,8 @@ export function parse2Json(pbsName: string): void {
         }
     }
     validatePBSObj(curr, pbsName)
-    fs.writeFileSync(`json/${pbsName}.json`, stringify(res, { maxLength: 80 }))
+
+    save(pbsName, res)
 }
 
 function validatePBSObj(obj: any, pbsName: string) {
@@ -98,4 +99,72 @@ export function parseRegionalDexes() {
         res[pokedex].push(value)
     }
     fs.writeFileSync(`json/regional_dexes.json`, stringify(res, { maxLength: 80 }))
+}
+
+export function save(pbsName: string, obj: { [k: string]: any }) {
+    for (let i = 2; i < process.argv.length; i++) {
+        const prop = process.argv[i]
+        switch (prop) {
+            case 'snake_case':
+                for (let key of Object.keys(obj)) {
+                    obj[key] = objKey2SnakeCase(obj[key])
+                }
+                break
+            case 'better_moveset':
+                if (pbsName != 'pokemon') break
+                for (let key of Object.keys(obj)) {
+                    let pkm = obj[key]
+                    const better_moveset = []
+                    for (let i = 0; i < pkm.moves.length; i += 2) {
+                        const level = pkm.moves[i]
+                        const moveName = pkm.moves[i + 1]
+                        process.argv.includes('snake_case')
+                            ? better_moveset.push({ learned_at: level, move: moveName })
+                            : better_moveset.push({ LearnedAt: level, Move: moveName })
+                    }
+                    pkm.moves = better_moveset
+                }
+
+                break
+            case 'break_up':
+                if (pbsName != 'pokemon') break
+                const MoveSets: { [k: string]: any } = {}
+                for (let key of Object.keys(obj)) {
+                    const pkm = obj[key]
+                    MoveSets[pkm.id] = {
+                        moves: pkm.moves,
+                        tutor_moves: pkm.tutor_moves,
+                        egg_moves: pkm.egg_moves
+                    }
+                    pkm.moves = undefined
+                    pkm.tutor_moves = undefined
+                    pkm.egg_moves = undefined
+                }
+                fs.writeFileSync(`json/moveset.json`, stringify(MoveSets, { maxLength: 80 }))
+                break
+        }
+    }
+    fs.writeFileSync(`json/${pbsName}.json`, stringify(obj, { maxLength: 80 }))
+}
+
+export function objKey2SnakeCase(obj: { [k: string]: any }) {
+    const toSnacke = (name: string) => {
+        let res: string = ''
+        let arr = name.split("")
+        if (arr.length <= 3) return name.toLowerCase()
+        arr.map((char, index) => {
+            if (char.toUpperCase() == char) {
+                res += (index == 0 || index == arr.length - 1) ? char.toLowerCase() : `_${char.toLowerCase()}`
+            }
+            else {
+                res += char
+            }
+        })
+        return res
+    }
+    const res: { [k: string]: any } = {}
+    for (const [key, value] of Object.entries(obj)) {
+        res[toSnacke(key)] = value
+    }
+    return res
 }

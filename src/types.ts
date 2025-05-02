@@ -82,6 +82,7 @@ export const DefaultPokemonSpecies: PokemonSpecies = {
 };
 
 export type Move = {
+    ID: string,
     Name: string;
     Type: string; // puedes ajustar los tipos válidos
     Category: string;
@@ -96,6 +97,7 @@ export type Move = {
 };
 
 export const DefaultMove: Move = {
+    ID: "UNNAME",
     Name: "DEFAULT",
     Type: "BUG",
     Category: "Special",

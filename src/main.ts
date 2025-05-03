@@ -8,7 +8,7 @@ class Config {
     public nomenclature: 'snake_case' | 'camelCase' | 'PascalCase'
     public betterMoveset: boolean = false
     public breakDown: boolean = false
-
+    public enums: boolean = false
 
     private static _instance: Config
     private constructor() {
@@ -20,6 +20,7 @@ class Config {
             Config._instance.nomenclature = process.argv[2] as 'snake_case' | 'camelCase' | 'PascalCase'
             Config._instance.betterMoveset = process.argv.includes('betterMoveset')
             Config._instance.breakDown = process.argv.includes('breakDown')
+            Config._instance.enums = process.argv.includes('enum')
         }
         return Config._instance
     }

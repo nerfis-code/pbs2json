@@ -124,6 +124,15 @@ export function save(pbsName: string, obj: { [k: string]: any }) {
             fs.writeFileSync(`json/moveset.json`, stringify(MoveSets, { maxLength: 80 }))
         }
     }
+
+    if (Config.getInstance().enums) {
+        let enums = '';
+        for (let key of Object.keys(obj)) {
+            enums += `${key},\n`
+            fs.writeFileSync(`json/enums/${pbsName}.txt`, enums)
+        }
+    }
+
     for (let key of Object.keys(obj)) {
         const newObj: { [k: string]: any } = {}
         const pkmn = obj[key]
